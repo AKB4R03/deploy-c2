@@ -38,33 +38,33 @@ const Detail = () => {
   return (
     <>
       {/* {console.log(rest)} */}
-      <div className="py-24 px-[500px]">
-        <div
-          className="max-w-sm rounded-box overflow-hidden shadow-lg bg-slate-700 "
-          key={rest?.data?.id}
-        >
-          <img
-            className="w-full"
-            src="https://ik.imagekit.io/q7pvfvakd/download_fzKMvrwNK.jpeg?updatedAt=1699032991278"
-            alt="Sunset in the mountains"
-          />
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2 text-white">
-              {rest?.data?.name}
+      <section className="bg-slate-900">
+        <div className="py-24 px-[500px]">
+          <div
+            className="max-w-sm rounded-box overflow-hidden shadow-lg bg-slate-700 "
+            key={rest?.data?.id}
+          >
+            <img
+              className="w-full"
+              src="https://ik.imagekit.io/q7pvfvakd/download_fzKMvrwNK.jpeg?updatedAt=1699032991278"
+              alt="Sunset in the mountains"
+            />
+            <div className="px-6 py-4">
+              <div className="font-bold text-xl mb-2 text-white">
+                {rest?.data?.name}
+              </div>
+              <p className="text-white">{rest?.data?.description}</p>
+              <p className="text-white">{rest?.data?.price}</p>
+              <button
+                className="btn btn-outline btn-default my-5 text-white"
+                onClick={handleClick}
+              >
+                Pesan
+              </button>
             </div>
-            <p>{rest?.data?.description}</p>
-            <p>{rest?.data?.price}</p>
-            <button
-              className="btn btn-outline btn-default my-5 text-white"
-              onClick={handleClick}
-            >
-              Pesan
-            </button>
           </div>
         </div>
-      </div>
-      {/* key= */}
-      {/* key={rest.data.id} */}
+      </section>
     </>
   );
 };
