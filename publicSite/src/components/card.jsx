@@ -47,10 +47,7 @@ const Card = () => {
                 className="max-w-sm rounded-lg overflow-hidden shadow-xl bg-slate-700 w-[350px]"
                 key={el.id}
               >
-                <img
-                  className="w-full"
-                  src="https://ik.imagekit.io/q7pvfvakd/download_fzKMvrwNK.jpeg?updatedAt=1699032991278"
-                />
+                <img className="w-full max-h-48 object-cover" src={el.imgUrl} />
                 <div className="px-6 py-4">
                   <div className="font-bold text-xl mb-2 text-white">
                     {el.name}

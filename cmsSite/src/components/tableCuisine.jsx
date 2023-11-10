@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const RESTAURANT_SERVER_URL = "http://localhost:3000";
 const restApi = axios.create({
   baseURL: RESTAURANT_SERVER_URL,
@@ -11,16 +11,22 @@ const TableCusine = () => {
   const [isLoading, setIsloading] = useState(true);
   const [error, setError] = useState(null);
   const [rest, setRest] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRest = async () => {
       try {
         setIsloading(true);
-        const { data } = await restApi.get("/cuisine/pub");
+        const accessToken = localStorage.getItem("access_token");
+
+        const headers = {
+          Authorization: `Bearer ${accessToken}`,
+        };
+        const { data } = await restApi.get("/cuisine", { headers });
         setRest(data);
       } catch (error) {
         console.log(error);
-        setError(err);
+        setError(error);
       } finally {
         setIsloading(false);
       }
@@ -28,9 +34,32 @@ const TableCusine = () => {
     fetchRest();
   }, []);
 
+  const handleOnClick = async (id) => {
+    const accessToken = localStorage.getItem("access_token");
+    console.log(id);
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await restApi.delete(`/cuisine/${id}`, { headers });
+
+    const { data } = await restApi.get("/cuisine", { headers });
+    setRest(data);
+    // setRest(data);
+    navigate("/home");
+    // fetchRest();
+    console.log(data);
+  };
+
+  const handleOnclickUpdate = (id) => {
+    navigate(`/updateCuisine/${id}`);
+  };
+
+  const handleOnclickUpload = (id) => {
+    navigate(`/uploadImage/${id}`);
+  };
+
   if (isLoading) return <p>Loading......Sabar</p>;
   if (error) return <p>error fetching, please try again!!</p>;
-
   return (
     <>
       {/* {console.log(rest.data.rows)} */}
@@ -48,7 +77,7 @@ const TableCusine = () => {
             </tr>
           </thead>
           <tbody>
-            {rest.data.rows.map((el) => (
+            {rest?.data?.map((el) => (
               <tr key={el.id}>
                 <td className="text-white">{el.name}</td>
                 <td className="text-white">{el.description}</td>
@@ -58,30 +87,41 @@ const TableCusine = () => {
                 <td className="text-white">{el.authorId}</td>
                 <td>
                   <div>
-                    <a
-                      href="#_"
-                      class="relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group "
+                    <button
+                      className="relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group "
+                      onClick={() => handleOnClick(el.id)}
                     >
-                      <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
-                      <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
-                      <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
+                      <span className="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+                      <span className="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+                      <span className="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
                         Delete
                       </span>
-                      <span class="absolute inset-0 border-2 border-white rounded-full"></span>
-                    </a>
-                  </div>
-                  <div>
-                    <Link
-                      to="/uploadImage"
-                      className="relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group"
+                      <span className="absolute inset-0 border-2 border-white rounded-full"></span>
+                    </button>
+                    <button
+                      className="relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group "
+                      onClick={() => handleOnclickUpload(el.id)}
                     >
-                      <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
-                      <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
-                      <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
+                      {/* //! ini liat di repo kak wendy */}
+                      <span className="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+                      <span className="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+                      <span className="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
                         Upload
                       </span>
-                      <span class="absolute inset-0 border-2 border-white rounded-full"></span>
-                    </Link>
+                      <span className="absolute inset-0 border-2 border-white rounded-full"></span>
+                    </button>
+                    <button
+                      className="relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group "
+                      onClick={() => handleOnclickUpdate(el.id)}
+                    >
+                      {/* //! ini belommmmm !!!!! */}
+                      <span className="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+                      <span className="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+                      <span className="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
+                        Update
+                      </span>
+                      <span className="absolute inset-0 border-2 border-white rounded-full"></span>
+                    </button>
                   </div>
                 </td>
               </tr>

@@ -1,6 +1,49 @@
 import Button from "../components/button";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const RESTAURANT_SERVER_URL = "http://localhost:3000";
+const restApi = axios.create({
+  baseURL: RESTAURANT_SERVER_URL,
+});
 
 const AddUser = () => {
+  const navigate = useNavigate();
+  const [input, setInput] = useState({
+    username: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+    address: "",
+  });
+
+  const onChangeHandle = (e) => {
+    const value = e.target.value;
+    const key = e.target.name;
+
+    setInput({
+      ...input,
+      [key]: value,
+    });
+  };
+
+  const onSubmitHandle = async (e) => {
+    try {
+      e.preventDefault();
+      const accessToken = localStorage.getItem("access_token");
+
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+      };
+      console.log(input);
+      await restApi.post("/register", input, { headers });
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <section className="bg-slate-800">
@@ -10,7 +53,10 @@ const AddUser = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Sign up your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={onSubmitHandle}
+              >
                 <div>
                   <label
                     htmlFor="username"
@@ -24,6 +70,8 @@ const AddUser = () => {
                     id="username"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="user one"
+                    value={input.username}
+                    onChange={onChangeHandle}
                   />
                 </div>
                 <div>
@@ -39,6 +87,8 @@ const AddUser = () => {
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
+                    value={input.email}
+                    onChange={onChangeHandle}
                   />
                 </div>
                 <div>
@@ -54,6 +104,8 @@ const AddUser = () => {
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={input.password}
+                    onChange={onChangeHandle}
                   />
                 </div>
                 <div>
@@ -69,6 +121,8 @@ const AddUser = () => {
                     id="phoneNumber"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="08080808080"
+                    value={input.phoneNumber}
+                    onChange={onChangeHandle}
                   />
                 </div>
                 <div>
@@ -84,6 +138,8 @@ const AddUser = () => {
                     id="address"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="jl blablabli"
+                    value={input.address}
+                    onChange={onChangeHandle}
                   />
                 </div>
                 <Button />

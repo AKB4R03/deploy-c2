@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import AddCuisine from "../views/addCuisine";
 import AddUser from "../views/AddUser";
 import Home from "../views/home";
@@ -11,6 +11,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+    loader: async () => {
+      if (!localStorage.access_token) {
+        return redirect("/");
+      }
+      return redirect("/home");
+    },
   },
   {
     element: <Parent />,
@@ -28,11 +34,11 @@ const router = createBrowserRouter([
         element: <AddCuisine />,
       },
       {
-        path: "/updateCuisine",
+        path: "/updateCuisine/:id",
         element: <UpdateCuisine />,
       },
       {
-        path: "/uploadImage",
+        path: "/uploadImage/:id",
         element: <UploadImg />,
       },
     ],

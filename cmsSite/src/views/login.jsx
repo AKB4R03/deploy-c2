@@ -1,6 +1,46 @@
 import Button from "../components/button";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [inputLogin, setInputLogin] = useState({
+    email: "",
+    password: "",
+  });
+
+  const onChangeHandle = (e) => {
+    const value = e.target.value;
+
+    // const inputKey = e.target.name;
+    // const keyName = inputKey.split("")[1];
+    // console.log(inputKey);
+    setInputLogin({
+      ...inputLogin,
+      [e.target.name]: value,
+    });
+  };
+
+  // console.log(inputLogin);
+  // console.log(onSubmitHandle);
+
+  const onSubmitHandle = async (e) => {
+    const navigate = useNavigate();
+    try {
+      e.preventDefault();
+
+      const { data } = await axios.post(
+        "http://localhost:3000/login",
+        inputLogin
+      );
+
+      localStorage.setItem("access_token", data.access_token);
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <section className="bg-slate-800">
@@ -12,7 +52,7 @@ const Login = () => {
               </h1>
               <form
                 className="space-y-4 md:space-y-6"
-                action="#"
+                onSubmit={onSubmitHandle}
                 // onSubmit={submitInputFormLogin}
               >
                 <div>
@@ -22,13 +62,17 @@ const Login = () => {
                   >
                     Your email
                   </label>
+                  {/* {console.log(inputLogin.email)} */}
                   <input
-                    type="email"
+                    type="text"
                     name="email"
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    // placeholder="name@company.com"
-                    //! value={formLogin.email}
+                    placeholder="name@company.com"
+                    autoComplete="off"
+                    value={inputLogin.email}
+                    onChange={onChangeHandle}
+                    // ! value={formLogin.email}
                   />
                 </div>
                 <div>
@@ -44,7 +88,8 @@ const Login = () => {
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    //! value={formLogin.password}
+                    value={inputLogin.password}
+                    onChange={onChangeHandle}
                   />
                 </div>
                 <div className="flex items-center justify-between">

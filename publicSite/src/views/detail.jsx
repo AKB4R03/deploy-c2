@@ -38,15 +38,15 @@ const Detail = () => {
   return (
     <>
       {/* {console.log(rest)} */}
-      <section className="bg-slate-900">
+      <section className="bg-slate-900 pb-48">
         <div className="py-24 px-[500px]">
           <div
             className="max-w-sm rounded-box overflow-hidden shadow-lg bg-slate-700 "
             key={rest?.data?.id}
           >
             <img
-              className="w-full"
-              src="https://ik.imagekit.io/q7pvfvakd/download_fzKMvrwNK.jpeg?updatedAt=1699032991278"
+              className="w-full max-h-48 object-cover"
+              src={rest?.data?.imgUrl}
               alt="Sunset in the mountains"
             />
             <div className="px-6 py-4">
