@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [inputLogin, setInputLogin] = useState({
     email: "",
     password: "",
@@ -25,7 +26,6 @@ const Login = () => {
   // console.log(onSubmitHandle);
 
   const onSubmitHandle = async (e) => {
-    const navigate = useNavigate();
     try {
       e.preventDefault();
 
@@ -33,7 +33,7 @@ const Login = () => {
         "http://localhost:3000/login",
         inputLogin
       );
-
+      console.log(data);
       localStorage.setItem("access_token", data.access_token);
       navigate("/home");
     } catch (error) {

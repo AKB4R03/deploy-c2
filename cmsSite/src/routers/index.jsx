@@ -9,16 +9,6 @@ import UploadImg from "../views/uploadImg";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Login />,
-    loader: async () => {
-      if (!localStorage.access_token) {
-        return redirect("/");
-      }
-      return redirect("/home");
-    },
-  },
-  {
     element: <Parent />,
     children: [
       {
@@ -42,6 +32,16 @@ const router = createBrowserRouter([
         element: <UploadImg />,
       },
     ],
+  },
+  {
+    path: "/",
+    element: <Login />,
+    loader: async () => {
+      if (localStorage.access_token) {
+        return redirect("/home");
+      }
+      return null;
+    },
   },
 ]);
 

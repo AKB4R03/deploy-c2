@@ -49,7 +49,7 @@ const FormAddCuisine = () => {
       [key]: value,
     });
   };
-  // console.log(input);
+  // console.log(input, "================");
   const onSubmitHandle = async (e) => {
     try {
       e.preventDefault();
@@ -58,7 +58,7 @@ const FormAddCuisine = () => {
       const headers = {
         Authorization: `Bearer ${accessToken}`,
       };
-      console.log(input);
+      // console.log(input, "=================2");
       await restApi.post("/cuisine", input, { headers });
       navigate("/home");
     } catch (error) {
@@ -165,7 +165,7 @@ const FormAddCuisine = () => {
                     <option value="" disabled>
                       Category
                     </option>
-                    {rest?.data?.map((el) => (
+                    {rest.data.map((el) => (
                       <option value={el.id} key={el.id}>
                         {el.name}
                       </option>
@@ -193,7 +193,7 @@ const FormAddCuisine = () => {
                   type="submit"
                   className="btn btn-outline btn-default my-5 text-black"
                 >
-                  Update Cuisine
+                  Add Cuisine
                 </button>
               </form>
             </div>

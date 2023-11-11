@@ -24,6 +24,7 @@ const TableCusine = () => {
         };
         const { data } = await restApi.get("/cuisine", { headers });
         setRest(data);
+        // console.log(rest);
       } catch (error) {
         console.log(error);
         setError(error);
