@@ -26,10 +26,9 @@ const Card2 = () => {
       try {
         setIsloading(true);
         if (query !== undefined || query == "") {
-          const { data } = await restApi
-            .get
-            // `/cuisine/pub?filter[category]=${query}`
-            ();
+          const { data } = await restApi.get(
+            `/cuisine/pub?filter[category]=${query}`
+          );
 
           console.log(query);
           setRest(data);

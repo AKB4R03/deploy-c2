@@ -6,10 +6,8 @@ const Filter = () => {
   const [inputNum, setInputNum] = useState();
 
   const handleOnClick = (num) => {
-    console.log(num, "=================");
-    setInputNum(num);
-    console.log(inputNum, "==========================");
-    navigate(`/${inputNum}`);
+    navigate(`/${num}`);
+    // console.log(inputNum, "==========================");
   };
 
   return (
