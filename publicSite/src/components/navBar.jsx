@@ -1,4 +1,30 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const NavBar = () => {
+  const [inputSearch, setInputSearch] = useState({
+    searching: "",
+  });
+  const navigate = useNavigate();
+
+  const handelOnChange = (e) => {
+    const value = e.target.value;
+    const key = e.target.name;
+
+    setInputSearch({
+      ...inputSearch,
+      [key]: value,
+    });
+    // console.log(inputSearch);
+  };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    console.log(inputSearch);
+    // if (inputSearch == undefined) setInputSearch({ search: "" });
+    navigate(`/${inputSearch}`);
+  };
+
   return (
     <>
       <div className="navbar bg-slate-800 text-neutral-content shadow-xl">
@@ -7,32 +33,16 @@ const NavBar = () => {
         </div>
         <div className="flex-none gap-2">
           <div className="form-control">
-            <input
-              type="text"
-              placeholder="Search"
-              className="input input-bordered w-24 md:w-auto"
-            />
-          </div>
-          <div className="dropdown dropdown-end">
-            <label className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full">
-                {/* <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" /> */}
-              </div>
-            </label>
-            <ul className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-              <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
-            </ul>
+            <form onSubmit={handleOnSubmit}>
+              <input
+                type="text"
+                className="input input-bordered w-24 md:w-auto"
+                name="searching"
+                value={inputSearch.searching}
+                onChange={handelOnChange}
+              />
+              <button className="btn btn-outline">Search</button>
+            </form>
           </div>
         </div>
       </div>
